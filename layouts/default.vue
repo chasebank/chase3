@@ -1,5 +1,5 @@
 <template>
-  <div id="layout">
+  <div id="layout" ref="layout">
     <transition name="showHeader-">
       <navigation v-if="contentScrolled || $route.name != 'index'"></navigation>
     </transition>
@@ -8,11 +8,11 @@
 
     <!-- <nuxt/> -->
 
-    <transition :name="$store.state.routeTransitionDirection" @before-leave="fakeScrollPosition">
+    <transition :name="$store.state.routeTransitionDirection" @before-leave="beforeRouteLeave" @enter="routeEnter">
       <nuxt :key="$route.fullPath" />
     </transition>
 
-    <myfooter ref="footer" />
+    <myfooter ref="myFooter" />
 
     <!-- <transition :name="routeTransitionDirection" @before-leave="fakeScrollPosition">
       <router-view :key="$route.fullPath"></router-view>
@@ -35,6 +35,8 @@ export default {
   data() {
     return {
       // routeTransitionDirection: "route-transition--slide-left-"
+      // lastFooterPosition: null,
+      // firstPageHeight: null
     }
   },
 
@@ -53,6 +55,9 @@ export default {
 
       // console.clear()
       // console.log(to.meta)
+
+      // console.log(this.$refs.layout)
+      
     }
   },
 
@@ -87,6 +92,133 @@ export default {
       window.addEventListener("scroll", function(){
         checkState()
       })
+    },
+
+    measureFooterPosition() {
+      // let windowHeight = document.body.innerHeight || document.documentElement.clientHeight,
+      //     elInfo = this.$refs.myFooter.$el.getBoundingClientRect(),
+      //     elTopPos = parseInt(elInfo.top),
+      //     elVisible = windowHeight - elTopPos,
+      //     elHidden = elInfo.height - elVisible
+      
+      // return elHidden
+    },
+
+    saveLastFooterPos(el) {
+      // this.lastFooterPosition = this.measureFooterPosition()
+      // this.firstPageHeight = getComputedStyle(el.parentNode).height
+
+      // let layoutEl = this.$refs.layout
+      // // this.firstPageHeight = getComputedStyle(layoutEl).height
+      // this.firstPageHeight = layoutEl.offsetHeight
+
+      // console.log('first post ' + this.firstPageHeight)
+      // console.log(el)
+    },
+
+    handleNewFooterPos(el) {
+      // let footerEl = this.$refs.myFooter.$el
+
+      // let newFooterPosition = this.measureFooterPosition(),
+      //     footerHeight = footerEl.getBoundingClientRect().height
+
+      // let newFooterFullyHidden = newFooterPosition > footerHeight,
+      //     oldFooterFullyHidden = this.lastFooterPosition > footerHeight
+
+      // let checkFooterPositionChange = newFooterPosition == this.lastFooterPosition
+
+      
+      // if (!checkFooterPositionChange && newFooterFullyHidden || !checkFooterPositionChange && oldFooterFullyHidden) {
+      //   footerEl.style.opacity = 0
+      //   footerEl.style.transition = "opacity .6"
+      //   footerEl.style.opacity = 1
+
+      //   setTimeout(() => {
+      //     footerEl.style.transition = "none"
+      //   }, 600);
+      // }
+      
+      // let newFooterHidden = newFooterPosition > 0,
+      //     newFooterPartiallyHidden = newFooterHidden && newFooterPosition < footerHeight,
+          
+      //     oldFooterHidden = this.lastFooterPosition > 0,
+      //     oldFooterPartiallyHidden = oldFooterHidden && this.lastFooterPosition < footerHeight
+      
+      // if (newFooterHidden != oldFooterHidden || newFooterPartiallyHidden || oldFooterPartiallyHidden) {
+      //   // if new or old hidden differ
+      //   // or if either were partially hidden
+      //   footerEl.style.backgroundColor = 'green'
+
+
+      //   // transition between the difference
+      // }
+      
+      // console.log(newFooterHidden != oldFooterHidden)
+      
+      
+      // if (newFooterHidden && !oldFooterHidden) {
+      //   // set position top to old
+      //   // transform(0,difference,0)
+      // }
+      
+      // if (oldFooterHidden && !newFooterHidden) {
+      //   // set position to 100%
+      //   // transform(0,-difference,0)
+      //   footerEl.style.position = 'fixed'
+      //   footerEl.style.top = '100%'
+      //   footerEl.style.transform = 'translate3d(0,100%,0)'
+
+      //   setTimeout(() => {
+      //     footerEl.style.position = 'initial'
+      //     footerEl.style.transform = 'translate3d(0,0,0)'
+      //   }, 600);
+      // }
+      
+      // if (newFooterPartiallyHidden || oldFooterPartiallyHidden) {
+      //   // not sure
+      // }
+      
+      // else both were fully visible or fully hidden and no transition is needed
+      // let firstHeight = getComputedStyle(loginEl).height
+      // el.style.height = 'auto'
+      // let secondPageHeight = getComputedStyle(el.parentNode).height
+      // el.style.height = this.firstPageHeight
+      // el.offsetHeight // force repaint
+      // el.style.height = secondPageHeight
+
+      // console.log(this.firstPageHeight)
+      // console.log(secondPageHeight)
+    },
+
+    beforeRouteLeave(el) {
+      this.fakeScrollPosition(el)
+      // this.saveLastFooterPos(el)
+    },
+
+    routeEnter(el) {
+      // this.handleNewFooterPos(el)
+
+      // let layoutEl = this.$refs.layout
+      // layoutEl.style.height = 'auto'
+      // let secondPageHeight = layoutEl.offsetHeight
+      // layoutEl.style.height = this.firstPageHeight + 'px'
+      // layoutEl.offsetHeight // force repaint
+      // layoutEl.style.height = secondPageHeight + 'px'
+
+      // let difference = (this.firstPageHeight - secondPageHeight) / 10000,
+      //     duration = .6 + (-difference > 0 ? -difference : difference) + 's'
+
+      // console.log('difference' + difference)
+      
+      // layoutEl.style.transitionDuration = duration
+
+      // console.log('second pos ' + secondPageHeight)
+
+      // setTimeout(() => {
+      //   layoutEl.style.height = 'auto'
+      // }, duration);
+
+      // this.$refs.myFooter.$el
     },
 
     getScrollbarWidth() {
@@ -126,7 +258,7 @@ export default {
     },
 
     getFooterHeight() {
-      const height = this.$refs.footer.$el.offsetHeight
+      const height = this.$refs.myFooter.$el.offsetHeight
 
       this.$el.style.setProperty('--footerHeight', height + 'px');
     }
