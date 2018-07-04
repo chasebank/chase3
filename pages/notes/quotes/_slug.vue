@@ -74,6 +74,12 @@ export default {
     thisQuote() {
       return this.quotes.find(quote => quote.slug == this.$route.params.slug)
     },
+
+    quoteStyling() {
+      let stylingClass = this.thisQuote.hasOwnProperty('quoteImage') ? this.thisQuote.quoteImage.replace(/\.[^/.]+$/, "") : this.thisQuote.author.replace(/[.]/g,'').replace(/ /g, '-').toLowerCase()
+
+      return stylingClass
+    },
     // thisProjectTitle() {
     //   return this.thisProject.toString()
     // },
