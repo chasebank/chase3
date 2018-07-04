@@ -3,7 +3,7 @@
     <div class="content">
       <h1 class="header--portfolio"><span>Portfolio</span><span>Projects</span></h1>
 
-      <portfolio></portfolio>
+      <portfolio/>
 
       <!-- <ul>
         <li v-for="project in projects"><nuxt-link :to="{ name: 'portfolio-slug', params: { slug: project.slug }}">{{ project.title }}</nuxt-link></li>
