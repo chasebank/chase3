@@ -17,7 +17,19 @@ module.exports = {
   },
 
   router: {
-    middleware: 'routeDepth'
+    middleware: 'routeDepth',
+
+    scrollBehavior: function (to, from, savedPosition) {
+      return new Promise(resolve => {
+        if (savedPosition) {
+          resolve(savedPosition)
+        }
+
+        else {
+          resolve({ x: 0, y: 0 })
+        }
+      })
+    }
   },
   /*
   ** Customize the progress bar color

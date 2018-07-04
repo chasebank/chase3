@@ -66,7 +66,7 @@ export default {
     goBack() {
       if (!this.contentScrolled && this.$route.name != 'index') {
 
-        if (this.routeHistory.length > 1) {
+        if (this.routeHistory.length > 0) {
           this.$router.go(-1)
         } else {
           this.$router.push({ name: 'index'})

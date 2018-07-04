@@ -8,7 +8,7 @@
 
     <!-- <nuxt/> -->
 
-    <transition :name="$store.state.routeTransitionDirection">
+    <transition :name="$store.state.routeTransitionDirection" @before-leave="fakeScrollPosition">
       <nuxt :key="$route.fullPath" />
     </transition>
 
@@ -65,6 +65,14 @@ export default {
   },
 
   methods: {
+    fakeScrollPosition(el) {
+      let scrollPosition = document.body.scrollTop || document.documentElement.scrollTop
+
+      el.style.top = (scrollPosition * -1) + 'px'
+
+      console.log('ran fakeScrollPos', scrollPosition)
+    },
+
     setScrollState() {
       let checkState = () => {
         if (document.body.scrollTop > 250 || document.documentElement.scrollTop > 250) {
@@ -346,7 +354,7 @@ main {
   left: 0;
   // width: $fullWidth;
   width: 100%;
-  // min-height: 100%;
+  min-height: 100%;
   flex: 2;
   z-index: 1;
 }
@@ -388,6 +396,7 @@ $transitionDurationForDebugging: .8s;
 .transition--route-slide-left--leave-active,
 .transition--route-slide-right--leave-active {
   position: fixed;
+  width: 100%;
 }
 
 image {
